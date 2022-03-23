@@ -89,7 +89,6 @@ func createTestRunsStatistic(f *excelize.File, object TestObject, size, sourceIn
 	f.SetCellStr(object.Uid, "C2", object.FullName)
 	f.MergeCell(object.Uid, "C2", "E2")
 
-	f.SetSheetVisible(object.Uid, false)
 	f.SetCellStr(object.Uid, "B3", "Started at")
 	f.SetColWidth(object.Uid, "B", "B", 20)
 	f.SetCellStr(object.Uid, "C3", "Duration")
@@ -126,10 +125,10 @@ func createSuccessRatePage(f *excelize.File, size int) {
 	f.SetCellStr(main, "L2", "Observed statistic")
 	f.MergeCell(main, "L2", "O2")
 
-	f.SetCellStr(main, "K3", "Passed")
-	f.SetCellStr(main, "L3", "Total")
-	f.SetCellStr(main, "M3", "Success rate %")
-	f.SetCellStr(main, "N3", "Details")
+	f.SetCellStr(main, "L3", "Passed")
+	f.SetCellStr(main, "M3", "Total")
+	f.SetCellStr(main, "N3", "Success rate %")
+	f.SetCellStr(main, "O3", "Details")
 
 	f.SetColWidth(main, "B", "B", 10)
 	f.SetColWidth(main, "C", "C", 20)

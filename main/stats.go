@@ -1,7 +1,6 @@
 package main
 
 import (
-	"archive/zip"
 	"fmt"
 	"log"
 	"os"
@@ -13,7 +12,7 @@ import (
 
 type argT struct {
 	cli.Helper
-	Path     string `cli:"p,path" usage:"path to allure root directory or allure.zip"`
+	Path     string `cli:"*p,path" usage:"path to allure root directory or allure.zip"`
 	From     string `cli:"from" usage:"time filter (2006-01-02 15:04:05 or 2006-01-02 format)"`
 	Till     string `cli:"till" usage:"time filter (2006-01-02 15:04:05 or 2006-01-02 format)"`
 	Pattern  string `cli:"pattern" usage:"regex for tests names"`
@@ -45,12 +44,6 @@ func main() {
 				log.Fatalf("Creating tmp dir %s is failed: %s", tmpDir, err)
 			}
 			defer os.RemoveAll(tmpDir)
-			reader, err := zip.OpenReader(argv.Path)
-			if err != nil {
-				return err
-			}
-			defer reader.Close()
-
 			pkg.Unzip(argv.Path, tmpDir)
 			if err != nil {
 				fmt.Println("Unzip", err)
@@ -60,7 +53,7 @@ func main() {
 
 		testObjects := pkg.ParseFiles(pathToMeta)
 		testObjects = pkg.FilterTestObjects(testObjects, pkg.ParseStringAsTimestamp(argv.From),
-			pkg.ParseStringAsTimestamp(argv.Till), argv.Services, argv.Services, argv.Envs)
+			pkg.ParseStringAsTimestamp(argv.Till), argv.Pattern, argv.Services, argv.Envs)
 		pkg.PrepareReport(testObjects, argv.Output)
 
 		fmt.Println("Report is done!")
